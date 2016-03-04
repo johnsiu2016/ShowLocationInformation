@@ -1,5 +1,6 @@
 package com.example.john.showlocationinformation;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,9 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +21,6 @@ import com.google.android.gms.location.LocationServices;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -32,6 +30,9 @@ public class MainActivity extends AppCompatActivity
 {
     private Button btnParse;
     private String mFileContents;
+    private TextView location;
+    private Button btnWeather;
+
     String lat = "";
     String lng = "";
     StringBuilder url = new StringBuilder();
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
 
-    protected TextView location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
         location = (TextView) findViewById(R.id.location);
+        btnWeather = (Button) findViewById(R.id.btnWeather);
 
         btnParse = (Button) findViewById(R.id.btnParse);
 
@@ -74,6 +75,14 @@ public class MainActivity extends AppCompatActivity
                 parseApplication.porcess();
 
                 location.setText(parseApplication.getApplication().get(0).getFormattedAddress());
+            }
+        });
+
+        btnWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
+                startActivity(intent);
             }
         });
 

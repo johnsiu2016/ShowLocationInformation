@@ -6,5 +6,9 @@
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>
     <string name="no_location_detected">Cannot detect location</string>
-    <string name="location">Location</string>
+    <string name="MainLocation">Location</string>
+    <string name="title_activity_weather">WeatherActivity</string>
+    <string name="temperature">temperature</string>
+    <string name="condition">condition</string>
+    <string name="location">location</string>
 </resources>

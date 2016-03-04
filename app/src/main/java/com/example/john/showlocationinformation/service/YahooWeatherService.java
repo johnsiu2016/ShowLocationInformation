@@ -18,34 +18,35 @@ import java.net.URLConnection;
  * Created by John on 5/3/2016.
  */
 public class YahooWeatherService {
-    private WeatherServiceCallBack callBack;
+    private WeatherServiceCallback callback;
     private String location;
     private Exception error;
 
-    public YahooWeatherService(WeatherServiceCallBack callBack) {
-        this.callBack = callBack;
+    public YahooWeatherService(WeatherServiceCallback callback) {
+        this.callback = callback;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public void refreshWeather(String location) {
-        this.location = location;
+    public void refreshWeather(String l) {
+        this.location = l;
+
         new AsyncTask<String, Void, String>() {
             @Override
-            protected String doInBackground(String... params) {
+            protected String doInBackground(String... strings) {
 
-                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", params[0]);
+                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", strings[0]);
 
                 String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
 
                 try {
                     URL url = new URL(endpoint);
 
-                    URLConnection urlConnection = url.openConnection();
+                    URLConnection connection = url.openConnection();
 
-                    InputStream inputStream = urlConnection.getInputStream();
+                    InputStream inputStream = connection.getInputStream();
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     StringBuilder result = new StringBuilder();
@@ -54,7 +55,7 @@ public class YahooWeatherService {
                         result.append(line);
                     }
 
-                    return reader.toString();
+                    return result.toString();
 
                 } catch (Exception e) {
                     error = e;
@@ -67,7 +68,7 @@ public class YahooWeatherService {
             protected void onPostExecute(String s) {
 
                 if (s == null && error != null) {
-                    callBack.servcieFailure(error);
+                    callback.serviceFailure(error);
                     return;
                 }
 
@@ -79,23 +80,28 @@ public class YahooWeatherService {
                     int count = queryResults.optInt("count");
 
                     if (count == 0) {
-                        callBack.servcieFailure(new LocationWeatherException("No weather information found for " + getLocation()));
+                        callback.serviceFailure(new LocationWeatherException("No weather information found for " + location));
                         return;
                     }
 
                     Channel channel = new Channel();
-                    channel.populate(queryResults.optJSONObject("result").optJSONObject("channel"));
+                    channel.populate(queryResults.optJSONObject("results").optJSONObject("channel"));
 
-                    callBack.serviceSuccess(channel);
+                    callback.serviceSuccess(channel);
+
                 } catch (JSONException e) {
-                    callBack.servcieFailure(e);
+                    callback.serviceFailure(e);
                 }
+
             }
+
         }.execute(location);
     }
+
     public class LocationWeatherException extends Exception {
         public LocationWeatherException(String detailMessage) {
             super(detailMessage);
         }
     }
 }
+

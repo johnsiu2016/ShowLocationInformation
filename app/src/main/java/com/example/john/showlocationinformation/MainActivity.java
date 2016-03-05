@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity
     private TextView location;
     private Button btnWeather;
 
-    GoogleLocationService googleLocationService;
-    String text = "";
+    private GoogleLocationService googleLocationService;
+    private String text = "";
 
     protected static final String TAG = "basic-location-sample";
-    String lat = "";
-    String lng = "";
-    StringBuilder params = new StringBuilder();
+    private String lat = "";
+    private String lng = "";
+    private StringBuilder params = new StringBuilder();
 
     /**
      * Provides the entry point to Google Play services.
@@ -165,12 +165,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void serviceSuccess(ArrayList<Application> application) {
-        text = application.get(0).getFormattedAddress();
-        location.setText(text);
+
+        if (!application.isEmpty()) {
+            text = application.get(0).getFormattedAddress();
+            location.setText(text);
+        }
+
     }
 
     @Override
     public void serviceFailure(Exception exception) {
-
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

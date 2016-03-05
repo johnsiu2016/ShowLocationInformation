@@ -1,24 +1,25 @@
 package com.example.john.showlocationinformation.Service.GoogleService;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.io.IOException;
+import com.example.john.showlocationinformation.data.XML.ParseApplication;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.net.URLConnection;
 
 /**
  * Created by John on 5/3/2016.
  */
 
 public class GoogleLocationService {
+    private LocationServiceCallback callback;
     private String mFileContents;
+    private Exception error;
 
-    public String getmFileContents() {
-        return mFileContents;
+    public GoogleLocationService(LocationServiceCallback callback) {
+        this.callback = callback;
     }
 
     public void downloading(String location) {
@@ -27,18 +28,25 @@ public class GoogleLocationService {
 
             @Override
             protected String doInBackground(String... params) {
+
                 mFileContents = downloadXMLFile(params[0]);
-                if (mFileContents == null) {
-                    Log.d("Downloading", "Error downloading");
-                }
 
                 return mFileContents;
             }
 
             @Override
             protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                Log.d("Downloading", "Result was: " + s);
+
+                if (s == null && error != null) {
+                    callback.serviceFailure(error);
+                    return;
+                }
+
+                ParseApplication parseApplication = new ParseApplication(mFileContents);
+                parseApplication.porcess();
+
+                callback.serviceSuccess(parseApplication.getApplication());
+
             }
 
         }.execute(location);
@@ -50,9 +58,7 @@ public class GoogleLocationService {
         try {
 
             URL url = new URL(link);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            int response = connection.getResponseCode();
-            Log.d("Downloading", "The response code was " + response);
+            URLConnection connection = url.openConnection();
             InputStream is = connection.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
 
@@ -68,10 +74,16 @@ public class GoogleLocationService {
 
             return tempBuffer.toString();
 
-        } catch (IOException e) {
-            Log.d("Downloading", "IO Exception reading data: " + e.getMessage());
+        } catch (Exception e) {
+            error = e;
         }
 
         return null;
+    }
+
+    public class LocationPositionException extends Exception {
+        public LocationPositionException(String detailMessage) {
+            super(detailMessage);
+        }
     }
 }

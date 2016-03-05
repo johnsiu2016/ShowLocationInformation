@@ -55,16 +55,6 @@
         android:layout_marginTop="@dimen/text_margin"
         android:textSize="@dimen/lat_long_text_size"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ParseXML"
-        android:id="@+id/btnParse"
-        android:layout_below="@+id/latitude_label"
-        android:layout_alignLeft="@+id/latitude_label"
-        android:layout_alignStart="@+id/latitude_label"
-        android:layout_marginTop="32dp" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,9 +72,9 @@
         android:text="@string/MainLocation"
         android:id="@+id/textView"
         android:layout_marginTop="42dp"
-        android:layout_below="@+id/btnParse"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/latitude_label" />
 
     <Button
         android:layout_width="wrap_content"

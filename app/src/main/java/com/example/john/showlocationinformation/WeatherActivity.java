@@ -34,6 +34,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         locationTextView = (TextView) findViewById(R.id.locationTextView);
 
         service = new YahooWeatherService(this);
+
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading...");
         dialog.show();

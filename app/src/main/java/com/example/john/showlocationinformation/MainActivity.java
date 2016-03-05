@@ -14,19 +14,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.john.showlocationinformation.Service.GoogleService.GoogleLocationService;
-import com.example.john.showlocationinformation.data.XML.ParseApplication;
+import com.example.john.showlocationinformation.Service.GoogleService.LocationServiceCallback;
+import com.example.john.showlocationinformation.data.XML.Application;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
-        implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
-{
-    private Button btnParse;
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationServiceCallback {
+
     private TextView location;
     private Button btnWeather;
 
-    GoogleLocationService googleLocationService = new GoogleLocationService();
+    GoogleLocationService googleLocationService;
     String text = "";
 
     protected static final String TAG = "basic-location-sample";
@@ -47,7 +49,6 @@ public class MainActivity extends AppCompatActivity
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,17 +62,7 @@ public class MainActivity extends AppCompatActivity
         location = (TextView) findViewById(R.id.location);
         btnWeather = (Button) findViewById(R.id.btnWeather);
 
-        btnParse = (Button) findViewById(R.id.btnParse);
-
-        btnParse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseApplication parseApplication = new ParseApplication(googleLocationService.getmFileContents());
-                parseApplication.porcess();
-                text = parseApplication.getApplication().get(0).getFormattedAddress();
-                location.setText(text);
-            }
-        });
+        googleLocationService = new GoogleLocationService(this);
 
         btnWeather.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,31 +75,6 @@ public class MainActivity extends AppCompatActivity
 
         buildGoogleApiClient();
 
-    }
-
-    /**
-     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
-     */
-    public synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(MainActivity.this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
     }
 
     @Override
@@ -134,6 +100,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    /**
      * Runs when a GoogleApiClient object successfully connects.
      */
     @Override
@@ -149,7 +140,7 @@ public class MainActivity extends AppCompatActivity
             lng = String.valueOf(mLastLocation.getLongitude());
             mLongitudeText.setText(lng);
 
-            params.append(lat).append(lng);
+            params.append(lat).append(",").append(lng);
             googleLocationService.downloading(params.toString());
         } else {
             Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
@@ -170,5 +161,16 @@ public class MainActivity extends AppCompatActivity
         // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void serviceSuccess(ArrayList<Application> application) {
+        text = application.get(0).getFormattedAddress();
+        location.setText(text);
+    }
+
+    @Override
+    public void serviceFailure(Exception exception) {
+
     }
 }

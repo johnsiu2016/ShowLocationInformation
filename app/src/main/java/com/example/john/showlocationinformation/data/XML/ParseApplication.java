@@ -1,4 +1,4 @@
-package com.example.john.showlocationinformation;
+package com.example.john.showlocationinformation.data.XML;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -22,7 +22,7 @@ public class ParseApplication {
         return application;
     }
 
-    boolean porcess() {
+    public boolean porcess() {
         boolean status = true;
         Application currentRecord = null;
         boolean inEntry = false;

@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.john.showlocationinformation.data.Channel;
-import com.example.john.showlocationinformation.data.Item;
-import com.example.john.showlocationinformation.service.WeatherServiceCallback;
-import com.example.john.showlocationinformation.service.YahooWeatherService;
+import com.example.john.showlocationinformation.Service.YahooService.WeatherServiceCallback;
+import com.example.john.showlocationinformation.Service.YahooService.YahooWeatherService;
+import com.example.john.showlocationinformation.data.JSON.Channel;
+import com.example.john.showlocationinformation.data.JSON.Item;
 
 public class WeatherActivity extends AppCompatActivity implements WeatherServiceCallback {
 
@@ -38,7 +38,9 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         dialog.setMessage("Loading...");
         dialog.show();
 
-        service.refreshWeather("Fanling, HK");
+        Bundle bundle = getIntent().getExtras();
+        String currentLocation = bundle.getString("currentLocation");
+        service.refreshWeather(currentLocation);
     }
 
     @Override

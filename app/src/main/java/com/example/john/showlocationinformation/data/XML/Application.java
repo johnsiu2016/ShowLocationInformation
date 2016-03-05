@@ -1,4 +1,4 @@
-package com.example.john.showlocationinformation;
+package com.example.john.showlocationinformation.data.XML;
 
 /**
  * Created by John on 4/3/2016.

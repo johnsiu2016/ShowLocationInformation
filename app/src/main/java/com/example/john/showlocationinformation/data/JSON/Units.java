@@ -1,4 +1,6 @@
-package com.example.john.showlocationinformation.data;
+package com.example.john.showlocationinformation.data.JSON;
+
+import com.example.john.showlocationinformation.data.JSON.JSONPopulator;
 
 import org.json.JSONObject;
 

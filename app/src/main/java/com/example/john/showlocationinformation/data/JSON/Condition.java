@@ -1,4 +1,4 @@
-package com.example.john.showlocationinformation.data;
+package com.example.john.showlocationinformation.data.JSON;
 
 import org.json.JSONObject;
 

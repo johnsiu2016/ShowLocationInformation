@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView location;
     private Button btnWeather;
+    private Button btnGoogleMap;
 
     private GoogleLocationService googleLocationService;
     private String text = "";
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
         location = (TextView) findViewById(R.id.location);
         btnWeather = (Button) findViewById(R.id.btnWeather);
+        btnGoogleMap = (Button) findViewById(R.id.btnGoogleMap);
 
         googleLocationService = new GoogleLocationService(this);
 
@@ -69,6 +71,16 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                 intent.putExtra("currentLocation", text);
+                startActivity(intent);
+            }
+        });
+
+        btnGoogleMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
                 startActivity(intent);
             }
         });

@@ -83,7 +83,15 @@
         android:id="@+id/btnWeather"
         android:layout_marginTop="57dp"
         android:layout_below="@+id/location"
-        android:layout_toRightOf="@+id/latitude_label"
-        android:layout_toEndOf="@+id/latitude_label" />
+        android:layout_toRightOf="@+id/latitude_label" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GoogleMap"
+        android:id="@+id/btnGoogleMap"
+        android:layout_below="@+id/btnWeather"
+        android:layout_alignLeft="@+id/btnWeather"
+        android:layout_alignStart="@+id/btnWeather" />
 
 </RelativeLayout>

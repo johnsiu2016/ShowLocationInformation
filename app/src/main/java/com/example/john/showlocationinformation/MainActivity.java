@@ -2,6 +2,7 @@ package com.example.john.showlocationinformation;
 
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity
     private TextView location;
     private Button btnWeather;
     private Button btnGoogleMap;
+    private Button btnBaiduMap;
+    private Button btnGoogleMapStandalone;
 
     private GoogleLocationService googleLocationService;
     private String text = "";
@@ -47,9 +50,6 @@ public class MainActivity extends AppCompatActivity
      */
     protected Location mLastLocation;
 
-    protected TextView mLatitudeText;
-    protected TextView mLongitudeText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
-        mLongitudeText = (TextView) findViewById((R.id.longitude_text));
         location = (TextView) findViewById(R.id.location);
         btnWeather = (Button) findViewById(R.id.btnWeather);
         btnGoogleMap = (Button) findViewById(R.id.btnGoogleMap);
+        btnBaiduMap = (Button) findViewById(R.id.btnBaiduMap);
+        btnGoogleMapStandalone = (Button) findViewById(R.id.btnGoogleMapStandalone);
 
         googleLocationService = new GoogleLocationService(this);
 
@@ -79,11 +79,36 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtra("lat", lat);
-                intent.putExtra("lng", lng);
+                intent.putExtra("lat", Double.parseDouble(lat));
+                intent.putExtra("lng", Double.parseDouble(lng));
                 startActivity(intent);
             }
         });
+
+        btnGoogleMapStandalone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Creates an Intent that will load a map of San Francisco
+                Uri gmmIntentUri = Uri.parse(String.format("geo:%s,%s", lat, lng));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+            }
+        });
+
+        btnBaiduMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BaiduActivity.class);
+                intent.putExtra("y", Double.parseDouble(lat));
+                intent.putExtra("x", Double.parseDouble(lng));
+                startActivity(intent);
+            }
+        });
+
+
 
         buildGoogleApiClient();
 
@@ -148,9 +173,7 @@ public class MainActivity extends AppCompatActivity
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             lat = String.valueOf(mLastLocation.getLatitude());
-            mLatitudeText.setText(lat);
             lng = String.valueOf(mLastLocation.getLongitude());
-            mLongitudeText.setText(lng);
 
             params.append(lat).append(",").append(lng);
             googleLocationService.downloading(params.toString());

@@ -10,57 +10,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.john.showlocationinformation.MainActivity"
-    tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:id="@+id/latitude_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/latitude_label"
-        android:textSize="@dimen/lat_long_text_size"
-        android:layout_marginLeft="57dp"
-        android:layout_marginStart="57dp"
-        android:layout_below="@+id/longitude_label"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/latitude_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/latitude_label"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/latitude_label"
-        android:textIsSelectable="true"
-        android:textSize="@dimen/lat_long_text_size" />
-
-    <TextView
-        android:id="@+id/longitude_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/longitude_label"
-        android:textSize="@dimen/lat_long_text_size"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/latitude_label"
-        android:layout_alignStart="@+id/latitude_label" />
-
-    <TextView
-        android:id="@+id/longitude_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/longitude_label"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/longitude_label"
-        android:textIsSelectable="true"
-        android:layout_marginTop="@dimen/text_margin"
-        android:textSize="@dimen/lat_long_text_size"/>
+    tools:showIn="@layout/activity_main"
+    android:background="#2ae0a3">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/location"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -71,27 +29,71 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/MainLocation"
         android:id="@+id/textView"
-        android:layout_marginTop="42dp"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/latitude_label" />
+        android:layout_marginTop="33dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Weather"
         android:id="@+id/btnWeather"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="59dp"
         android:layout_below="@+id/location"
-        android:layout_toRightOf="@+id/latitude_label" />
+        android:layout_alignLeft="@+id/btnGoogleMap"
+        android:layout_alignStart="@+id/btnGoogleMap"
+        android:textColor="#2ae0a3"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:background="#0a0af2"
+        android:allowUndo="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GoogleMap"
         android:id="@+id/btnGoogleMap"
         android:layout_below="@+id/btnWeather"
-        android:layout_alignLeft="@+id/btnWeather"
-        android:layout_alignStart="@+id/btnWeather" />
+        android:background="#304fd7"
+        android:textColor="#2ae0a3"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BaiduMap"
+        android:id="@+id/btnBaiduMap"
+        android:layout_below="@+id/btnGoogleMapStandalone"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#359dc9"
+        android:textColor="#2ae0a3"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GoogleMapStandalone"
+        android:id="@+id/btnGoogleMapStandalone"
+        android:layout_below="@+id/btnGoogleMap"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#3b73bd"
+        android:textColor="#2ae0a3"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Please open GPS in order to work this app properly"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

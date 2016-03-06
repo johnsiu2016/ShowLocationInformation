@@ -40,7 +40,17 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="gTRBro92Vr9r2EIyssRInYGm" />
+
+        <activity
+            android:name=".BaiduActivity"
+            android:label="@string/title_activity_baidu"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>
